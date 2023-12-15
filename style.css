@@ -25,6 +25,16 @@ html {
 }
 
 
+/* UTILITIES */
+
+.display-none {
+    display: none;
+}
+
+
+
+
+
 /* Mask */
 
 .mask {
@@ -77,8 +87,43 @@ html {
     display: flex;
     justify-content: space-between;
     padding: 32px;
-    border: 1px solid white;
-    border-radius: 32px;
+    /* border: 1px solid white;
+    border-radius: 32px; */
+    /* background-color: #363636; */
+    /* background: rgba(255, 255, 255, 0.2); */
+    /* From https://css.glass */
 
+    /* glass effect */
+    background: rgba(74, 71, 71, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(10, 9, 9, 0.3);
 }
+
+
+
+.section-add-task {
+    margin-top: 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-add-task {
+    background-color: var(--bg-color);
+    /* opacity: 0; */
+    border: 0;
+    width: 64px;
+    scale: 1;
+    transition: scale 0.3s;
+}
+
+.btn-add-task:hover {
+    cursor: pointer;
+    scale: 1.1;
+    transition: scale 0.3s;
+}
+
 

@@ -21,7 +21,7 @@
 
     <section>
         <ul id="list-todo" class="list-todo">
-            <li class="task">
+            <!-- <li class="task">
                 <p>Sortir le chien</p>
                 <div>
                     <button type="button">Editer</button>
@@ -46,11 +46,11 @@
                     <button type="button">Passer en fait</button>
                 </div>
 
-            </li>
+            </li> -->
         </ul>  
         <hr class="separator">
         <ul id="list-done" class="list-done">
-            <li class="task">
+            <!-- <li class="task">
                 <p>Se lever</p>
                 <div>
                     <button type="button">Editer</button>
@@ -76,12 +76,36 @@
                     <button type="button">Passer à faire</button>
                 </div>
 
-            </li>
+            </li> -->
         </ul>  
 
     </section>
+    <section class="section-add-task">
+        <button id="btn-add-task" class="btn-add-task"><img src="assets/img/icon-plus.svg"></button>
+        
+        <form id="form-add-task" class="display-none" action="">
+            <label for="content"></label>
+            <input type="text" id="content" name="content">
+            <button type="submit">Ajouter</button>
+        </form>
+        
+    </section>
 
     </main>
+
+    <template id="template-todo">
+        <li id="" class="task">
+            <p id="content">Venir en voiture</p>
+            <div>
+                <button class="js-edit" type="button">Editer</button>
+                <button class="js-delete" type="button">Supprimer</button>
+                <button class="js-check" type="button">Passer à faire</button>
+            </div>
+        </li>
+    </template>
+
+
+
 
     <script src="script.js"></script>
 </body>
