@@ -113,7 +113,9 @@ formAddTaskDOM.addEventListener("submit", function(e) {
 });
 
 
-
+const statsBtn = document.querySelector("#stats").addEventListener("click", function(e) {
+    alert("Désolé, pas eu le temps !");
+})
 
 
 /* ----------------------------- */
@@ -215,10 +217,7 @@ function handleEdit(elementDOM) {
         document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`).addEventListener("submit", function(e) {
             e.preventDefault();
             document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`).classList.toggle("display-none");
-            console.log(e.target);
-            console.log(e);
             let editFormData = new FormData(e.target);
-            console.log(editFormData);
 
             todos.forEach((todo, index) => {
                 if(todo.idTask == e.target.dataset.idTask) {
