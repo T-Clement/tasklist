@@ -53,7 +53,7 @@ const todosDoneDOM = document.querySelector("#list-done");
 const templateToDo = document.getElementById("template-todo");
 
 // map on each Todo with call to function who place todos in DOM
-if(todos.length != 0) {
+if(todos.length != 0 || todos.length != null) {
     todos.map((element) => {
         if(element.state === 0) {
             addToDos(todosToDoDOM, element);
@@ -110,9 +110,64 @@ formAddTaskDOM.addEventListener("submit", function(e) {
     e.target.querySelector("#content").value="";
 });
 
-// problème sur les listes de tache vides ?
-// ajouter les différentes fonctions de gestions des différentes actions / clics à la génération de la liste
-// et lorsqu'une nouvelle tache est générée
+
+
+
+
+/* ----------------------------- */
+/* ----------------------------- */
+/* FUNCTIONS */ 
+
+/**
+ * This function generate and place in DOM the todos (element) related to their state
+ * @param {*} typeOfTodoDOM 
+ * @param {*} element 
+ */
+function addToDos(typeOfTodoDOM, element) {
+    const clone = templateToDo.content.cloneNode(true);
+    clone.querySelector("#task").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-delete").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-edit").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-check").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-input-edit").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".form-edit").dataset.idTask = parseInt(element.idTask);
+
+    clone.querySelector("#content").textContent = element.content;
+    clone.querySelector(".js-check").textContent = element.state ? "Remettre à faire" : "Passer à faire";
+    
+    // add of event listeners
+    handleDelete(clone);
+    handleCheck(clone);
+    handleEdit(clone);
+    
+    typeOfTodoDOM.appendChild(clone);
+
+}
+
+function addSingleToDo(element, typeOfTodoDOM = todosToDoDOM) {
+    const clone = templateToDo.content.cloneNode(true);
+    clone.querySelector("#content").textContent = element.content;
+    clone.querySelector("#task").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-delete").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-edit").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-check").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-input-edit").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".form-edit").dataset.idTask = parseInt(element.idTask);
+
+    clone.querySelector(".js-check").textContent = element.state ? "Remettre à faire" : "Passer à faire";
+
+    // add of event listeners
+    // clone is a DOM element, element is the task as a JS Object
+    handleDelete(clone, element);
+    handleCheck(clone);
+    handleEdit(clone);
+    
+    // append element to the DOM
+    typeOfTodoDOM.appendChild(clone);
+
+
+}
+
 
 
 function handleDelete(elementDOM, element ="") {
@@ -161,54 +216,37 @@ function handleCheck(elementDOM) {
 }
 
 
+function handleEdit(elementDOM) {
 
-/* ----------------------------- */
-/* ----------------------------- */
-/* FUNCTIONS */ 
+    elementDOM.querySelector(".js-edit").addEventListener("click", function(e) {
+        // console.log("L'édition c'est en cours");
+        console.log(document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`));
+        document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`).classList.toggle("display-none");
+        document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`).addEventListener("submit", function(e) {
+            e.preventDefault();
+            document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`).classList.toggle("display-none");
+            console.log(e.target);
+            console.log(e);
+            let editFormData = new FormData(e.target);
+            console.log(editFormData);
 
-/**
- * This function generate and place in DOM the todos (element) related to their state
- * @param {*} typeOfTodoDOM 
- * @param {*} element 
- */
-function addToDos(typeOfTodoDOM, element) {
-    const clone = templateToDo.content.cloneNode(true);
-    clone.querySelector("#task").dataset.idTask = parseInt(element.idTask);
-    clone.querySelector(".js-delete").dataset.idTask = parseInt(element.idTask);
-    clone.querySelector(".js-edit").dataset.idTask = parseInt(element.idTask);
-    clone.querySelector(".js-check").dataset.idTask = parseInt(element.idTask);
-    clone.querySelector("#content").textContent = element.content;
-    clone.querySelector(".js-check").textContent = element.state ? "Remettre à faire" : "Passer à faire";
-    
-    // add of event listeners
-    handleDelete(clone);
-    handleCheck(clone);
-
-    
-    typeOfTodoDOM.appendChild(clone);
-
+            todos.forEach((todo, index) => {
+                if(todo.idTask == e.target.dataset.idTask) {
+                    todo.content = editFormData.get("edit-task");
+                    document.querySelector(`.js-list [data-id-task="${e.target.dataset.idTask}"] #content`).textContent = todo.content;
+                }
+            });
+            sendToDosToLocalStorage(todos);
+        });
+    });
 }
 
-function addSingleToDo(element, typeOfTodoDOM = todosToDoDOM) {
-    const clone = templateToDo.content.cloneNode(true);
-    clone.querySelector("#content").textContent = element.content;
-    clone.querySelector("#task").dataset.idTask = parseInt(element.idTask);
-    clone.querySelector(".js-delete").dataset.idTask = parseInt(element.idTask);
-    clone.querySelector(".js-edit").dataset.idTask = parseInt(element.idTask);
-    clone.querySelector(".js-check").dataset.idTask = parseInt(element.idTask);
-    clone.querySelector(".js-check").textContent = element.state ? "Remettre à faire" : "Passer à faire";
-
-    // add of event listeners
-    // clone is a DOM element, element is the task as a JS Object
-    handleDelete(clone, element);
-    handleCheck(clone);
-    
-    
-    // append element to the DOM
-    typeOfTodoDOM.appendChild(clone);
 
 
-}
+
+
+
+
 
 
 /**
