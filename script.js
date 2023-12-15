@@ -2,6 +2,13 @@
 checkUser();
 
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// le id sur la longueur du tableau ça marche pas
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // 
 const randomUserBtn = document.querySelector("#randomUser");
@@ -37,64 +44,10 @@ username.textContent = localStorage.getItem("username");
 
 // a alimenter en JS a chaque mise à jour du contenu de la page 
 // et les interactions
-let todos = [
-    // {
-    //     idTask: 1,
-    //     content: "Sortir le chien",
-    //     state: 0
-    // },
-    // {
-    //     idTask: 2,
-    //     content: "Rendre l'évaluation",
-    //     state: 0
-    // },
-    // {
-    //     idTask: 3,
-    //     content: "Manger à midi",
-    //     state: 0
-    // },
-    // {
-    //     idTask: 4,
-    //     content: "Se lever",
-    //     state: 1
-    // },
-    // {
-    //     idTask: 5,
-    //     content: "Venir en voiture",
-    //     state: 1
-    // },
-    // {
-    //     idTask: 6,
-    //     content: "Se faire un thé",
-    //     state: 1
-    // },
-]
-// console.log("")
-console.log(todos);
+let todos = [];
+// console.log(todos);
 
 // sendToDosToLocalStorage(todos);
-
-
-let todosImport = [];
-todosImport = getToDosFromLocalStorage();
-// todosTest = [1,2,3]
-console.log(todosImport);
-
-
-
-
-
-/**
- * This function is called at each change on a task (state, creation, delete, edit) 
- * @param {Object} todos 
- */
-function sendToDosToLocalStorage(todos) {
-    localStorage.setItem("tasks", JSON.stringify(todos));
-}
-
-function getToDosFromLocalStorage() {
-    return JSON.parse(localStorage.getItem("tasks"));
-}
 
 
 // get todos froms LocalStorage to display tasks
@@ -134,23 +87,26 @@ btnAddTaskDOM.addEventListener("click", function(e) {
 });
 
 
+// handle submit of form, push in todos current array and save new array in localStorage
 const formAddTaskDOM = document.querySelector("#form-add-task");
 formAddTaskDOM.addEventListener("submit", function(e) {
     e.preventDefault();
     console.log(e.target);
     const formDataAddTask = new FormData(e.target);
-    let idTask = todos.length + 1
+
+    // use of Date to get a unique id
+    let idTask = Date.now();
     formDataAddTask.append("idTask", idTask);
     // lengthOfTodos++;
     formDataAddTask.append("state", 0);
     
-
+    // convert formData in JS Object
     let formDataObj = {};
     formDataAddTask.forEach((value, key) => {
         if(key !== "content") {
-            formDataObj[key] = parseInt(value)
+            formDataObj[key] = parseInt(value);
         } else {
-            formDataObj[key] = value
+            formDataObj[key] = value;
         }
     });
 
@@ -161,20 +117,52 @@ formAddTaskDOM.addEventListener("submit", function(e) {
     // console.log(getToDosFromLocalStorage());
     // console.log(todos);
     
-    // !!!!!!!!!!!!!!!!
     // send array to local Storage
     sendToDosToLocalStorage(todos);
-    // !!!!!!!!!!!!!!!!
     
-
+    
 
     // clean input value / text
     e.target.querySelector("#content").value="";
 });
 
+// problème sur les listes de tache vides ?
+// ajouter les différentes fonctions de gestions des différentes actions / clics à la génération de la liste
+// et lorsqu'une nouvelle tache est générée
 
 
+function handleDelete(elementDOM, element ="") {
+    elementDOM.querySelector(".js-delete").addEventListener("click", function (e) {        
+        // console.log("Tu veux supprimer ?"); return;
+        todos.forEach((todo, index) => {
+            // console.log(todo);
+            if(todo.idTask == e.target.dataset.idTask) {
+                // console.warn("ToDO concernée");
+                // console.warn(todo);
+                // console.log(index);
+                todos.splice(index, 1);
+                // console.log(elementDOM);
+                // console.warn("element à supprimer");
+                // console.warn(document.querySelector(`.js-list [data-id-task="${todo.idTask}"]`));
+                document.querySelector(`.js-list [data-id-task="${todo.idTask}"]`).remove();
+                // console.log(todos);
+                sendToDosToLocalStorage(todos);
+            }
 
+        });
+    });
+}
+
+function handleCheck(elementDOM) {
+    // console.log(elementDOM.querySelector(".js-check"));
+    elementDOM.querySelector(".js-check").addEventListener("click", function(e) {
+        console.log("Tu veux check ou uncheck ?");
+        console.log(e.target.dataset.idTask);
+        console.log(e.target);
+    });
+
+
+}
 
 
 
@@ -189,15 +177,40 @@ formAddTaskDOM.addEventListener("submit", function(e) {
  */
 function addToDos(typeOfTodoDOM, element) {
     const clone = templateToDo.content.cloneNode(true);
+    clone.querySelector("#task").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-delete").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-edit").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-check").dataset.idTask = parseInt(element.idTask);
     clone.querySelector("#content").textContent = element.content;
     clone.querySelector(".js-check").textContent = element.state ? "Passer à faire" : "Remettre à faire";
+    
+    // add of event listeners
+    handleDelete(clone);
+    handleCheck(clone);
+
+    
     typeOfTodoDOM.appendChild(clone);
+
 }
 
 function addSingleToDo(element) {
     const clone = templateToDo.content.cloneNode(true);
     clone.querySelector("#content").textContent = element.content;
+    clone.querySelector("#task").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-delete").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-edit").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-check").dataset.idTask = parseInt(element.idTask);
+
+    // add of event listeners
+    // clone is a DOM element, element is the task as a JS Object
+    handleDelete(clone, element);
+    handleCheck(clone);
+    
+    
+    // append element to the DOM
     todosToDoDOM.appendChild(clone);
+
+
 }
 
 
@@ -210,6 +223,18 @@ async function fetchRandomUserName() {
     return await response.json();
 }
 
+
+/**
+ * This function is called at each change on a task (state, creation, delete, edit) 
+ * @param {Object} todos 
+ */
+function sendToDosToLocalStorage(todos) {
+    localStorage.setItem("tasks", JSON.stringify(todos));
+}
+
+function getToDosFromLocalStorage() {
+    return JSON.parse(localStorage.getItem("tasks"));
+}
 
 
 
