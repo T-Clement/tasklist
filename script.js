@@ -1,16 +1,6 @@
 // call to function to set the landing page content
 checkUser();
 
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-// le id sur la longueur du tableau ça marche pas
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-// 
 const randomUserBtn = document.querySelector("#randomUser");
 randomUserBtn.addEventListener("click", function() {
     fetchRandomUserName().then((response) => {
@@ -18,7 +8,6 @@ randomUserBtn.addEventListener("click", function() {
         document.querySelector("#usernameForm").value = response.results[0].login.username;
     });
 });
-
 
 const registerBtn = document.querySelector("#register");
 
@@ -113,15 +102,10 @@ formAddTaskDOM.addEventListener("submit", function(e) {
     addSingleToDo(formDataObj);
 
     todos.push(formDataObj);
-    // console.log(todos);
-    // console.log(getToDosFromLocalStorage());
-    // console.log(todos);
     
     // send array to local Storage
     sendToDosToLocalStorage(todos);
     
-    
-
     // clean input value / text
     e.target.querySelector("#content").value="";
 });
@@ -156,11 +140,23 @@ function handleDelete(elementDOM, element ="") {
 function handleCheck(elementDOM) {
     // console.log(elementDOM.querySelector(".js-check"));
     elementDOM.querySelector(".js-check").addEventListener("click", function(e) {
-        console.log("Tu veux check ou uncheck ?");
-        console.log(e.target.dataset.idTask);
-        console.log(e.target);
+        
+        todos.forEach((todo, index) => {
+            if(todo.idTask == e.target.dataset.idTask) {
+                if(todo.state == 0) {
+                    todo.state = 1;
+                    document.querySelector(`.js-list [data-id-task="${todo.idTask}"]`).remove();
+                    addSingleToDo(todo, todosDoneDOM);
+                } else if (todo.state == 1) {
+                    todo.state = 0;
+                    document.querySelector(`.js-list [data-id-task="${todo.idTask}"]`).remove();
+                    addSingleToDo(todo);
+                }
+                sendToDosToLocalStorage(todos)
+            }
+        });
+        
     });
-
 
 }
 
@@ -182,7 +178,7 @@ function addToDos(typeOfTodoDOM, element) {
     clone.querySelector(".js-edit").dataset.idTask = parseInt(element.idTask);
     clone.querySelector(".js-check").dataset.idTask = parseInt(element.idTask);
     clone.querySelector("#content").textContent = element.content;
-    clone.querySelector(".js-check").textContent = element.state ? "Passer à faire" : "Remettre à faire";
+    clone.querySelector(".js-check").textContent = element.state ? "Remettre à faire" : "Passer à faire";
     
     // add of event listeners
     handleDelete(clone);
@@ -193,13 +189,14 @@ function addToDos(typeOfTodoDOM, element) {
 
 }
 
-function addSingleToDo(element) {
+function addSingleToDo(element, typeOfTodoDOM = todosToDoDOM) {
     const clone = templateToDo.content.cloneNode(true);
     clone.querySelector("#content").textContent = element.content;
     clone.querySelector("#task").dataset.idTask = parseInt(element.idTask);
     clone.querySelector(".js-delete").dataset.idTask = parseInt(element.idTask);
     clone.querySelector(".js-edit").dataset.idTask = parseInt(element.idTask);
     clone.querySelector(".js-check").dataset.idTask = parseInt(element.idTask);
+    clone.querySelector(".js-check").textContent = element.state ? "Remettre à faire" : "Passer à faire";
 
     // add of event listeners
     // clone is a DOM element, element is the task as a JS Object
@@ -208,7 +205,7 @@ function addSingleToDo(element) {
     
     
     // append element to the DOM
-    todosToDoDOM.appendChild(clone);
+    typeOfTodoDOM.appendChild(clone);
 
 
 }
