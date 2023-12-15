@@ -16,7 +16,6 @@ const form = document.querySelector("#formUsername");
 form.addEventListener("submit", function(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    console.log(formData);
     localStorage.setItem("username", formData.get("usernameForm"));
 
     // call to function to display the content the page without the form
@@ -33,10 +32,6 @@ username.textContent = localStorage.getItem("username");
 // a alimenter en JS a chaque mise à jour du contenu de la page 
 // et les interactions
 let todos = [];
-// console.log(todos);
-
-// sendToDosToLocalStorage(todos);
-
 
 // get todos froms LocalStorage to display tasks
 todos = getToDosFromLocalStorage();
@@ -53,6 +48,7 @@ if(todos === null) {
             state: 0
         }
     ];  
+    // send todos to localStorage
     sendToDosToLocalStorage(todos);
 }
 
@@ -67,7 +63,6 @@ const templateToDo = document.getElementById("template-todo");
 
 // map on each Todo with call to function who place todos in DOM
 if(todos.length != 0) {
-    // if(todos == null) return;
     todos.map((element) => {
         if(element.state === 0) {
             addToDos(todosToDoDOM, element);
@@ -79,7 +74,6 @@ if(todos.length != 0) {
 
 
 // add task
-
 const btnAddTaskDOM = document.querySelector("#btn-add-task");
 let rotate = 0;
 // toggle the visibility of add task form
@@ -186,19 +180,10 @@ function addSingleToDo(element, typeOfTodoDOM = todosToDoDOM) {
 
 function handleDelete(elementDOM, element ="") {
     elementDOM.querySelector(".js-delete").addEventListener("click", function (e) {        
-        // console.log("Tu veux supprimer ?"); return;
         todos.forEach((todo, index) => {
-            // console.log(todo);
             if(todo.idTask == e.target.dataset.idTask) {
-                // console.warn("ToDO concernée");
-                // console.warn(todo);
-                // console.log(index);
                 todos.splice(index, 1);
-                // console.log(elementDOM);
-                // console.warn("element à supprimer");
-                // console.warn(document.querySelector(`.js-list [data-id-task="${todo.idTask}"]`));
                 document.querySelector(`.js-list [data-id-task="${todo.idTask}"]`).remove();
-                // console.log(todos);
                 sendToDosToLocalStorage(todos);
             }
 
@@ -233,8 +218,6 @@ function handleCheck(elementDOM) {
 function handleEdit(elementDOM) {
 
     elementDOM.querySelector(".js-edit").addEventListener("click", function(e) {
-        // console.log("L'édition c'est en cours");
-        console.log(document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`));
         document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`).classList.toggle("display-none");
         document.querySelector(`.js-list form[data-id-task="${e.target.dataset.idTask}"]`).addEventListener("submit", function(e) {
             e.preventDefault();
@@ -254,12 +237,6 @@ function handleEdit(elementDOM) {
         });
     });
 }
-
-
-
-
-
-
 
 
 
@@ -301,5 +278,3 @@ function checkUser () {
 }
 
 
-
-// envoi du json au localStorage à chaque changement
