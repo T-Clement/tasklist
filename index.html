@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List - Evaluation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="mask" class="mask">
+        <form id="formUsername" action="">
+            <label for="usernameForm">Veuillez rentrer un nom d'utilisateur</label>
+            <input type="text" id="usernameForm" name="usernameForm">
+            <button id="randomUser" type="button">Proposez moi un nom !</button>
+            <input id="register" type="submit" value="Enregistrez vous">
+        </form>
+    </div>
+    <main class="container">
+        <h1 class="title">To Do List de <span id="username" class="badge"></span></h1>
+
+    <section>
+        <ul id="list-todo" class="list-todo">
+            <li class="task">
+                <p>Sortir le chien</p>
+                <div>
+                    <button type="button">Editer</button>
+                    <button type="button">Supprimer</button>
+                    <button type="button">Passer en fait</button>
+                </div>
+            </li>
+            <li class="task">
+                <p>Rendre l'évaluation</p>
+                <div>
+                    <button type="button">Editer</button>
+                    <button type="button">Supprimer</button>
+                    <button type="button">Passer en fait</button>
+                </div>
+
+            </li>
+            <li class="task">
+                <p>Manger à midi</p>
+                <div>
+                    <button type="button">Editer</button>
+                    <button type="button">Supprimer</button>
+                    <button type="button">Passer en fait</button>
+                </div>
+
+            </li>
+        </ul>  
+        <hr class="separator">
+        <ul id="list-done" class="list-done">
+            <li class="task">
+                <p>Se lever</p>
+                <div>
+                    <button type="button">Editer</button>
+                    <button type="button">Supprimer</button>
+                    <button type="button">Passer à faire</button>
+                </div>
+
+            </li>
+            <li class="task">
+                <p>Venir en voiture</p>
+                <div>
+                    <button type="button">Editer</button>
+                    <button type="button">Supprimer</button>
+                    <button type="button">Passer à faire</button>
+                </div>
+
+            </li>
+            <li class="task">
+                <p>Se faire un thé</p>
+                <div>
+                    <button type="button">Editer</button>
+                    <button type="button">Supprimer</button>
+                    <button type="button">Passer à faire</button>
+                </div>
+
+            </li>
+        </ul>  
+
+    </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

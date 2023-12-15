@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto&family=Ubuntu&display=swap');
+
+
+:root {
+    font-family: "Roboto";
+    --bg-color: #121212;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+p, ul, li, a, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background-color: var(--bg-color);
+    color: white;
+}
+
+
+/* Mask */
+
+.mask {
+    position: absolute;
+    margin-top: 100px;
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+}
+
+.mask form {
+    margin: 0 auto;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/*  */
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.title {
+ margin: 20px 0;
+ text-align: center;
+}
+
+.badge {
+    color: var(--bg-color);
+    background-color: white;
+    padding: 10px;
+    border-radius: 16px;
+}
+
+
+.separator {
+    margin: 20px 0px;
+}
+
+.list-todo, .list-done {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    padding: 32px;
+    border: 1px solid white;
+    border-radius: 32px;
+
+}
+
