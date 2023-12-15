@@ -20,7 +20,8 @@ const form = document.querySelector("#formUsername");
 form.addEventListener("submit", function(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    localStorage.setItem("username", formData.get("username"));
+    console.log(formData);
+    localStorage.setItem("username", formData.get("usernameForm"));
 
     // call to function to display the content the page without the form
     checkUser();
@@ -37,37 +38,68 @@ username.textContent = localStorage.getItem("username");
 // a alimenter en JS a chaque mise à jour du contenu de la page 
 // et les interactions
 let todos = [
-    {
-        idTask: 1,
-        content: "Sortir le chien",
-        state: 0
-    },
-    {
-        idTask: 2,
-        content: "Rendre l'évaluation",
-        state: 0
-    },
-    {
-        idTask: 3,
-        content: "Manger à midi",
-        state: 0
-    },
-    {
-        idTask: 4,
-        content: "Se lever",
-        state: 1
-    },
-    {
-        idTask: 5,
-        content: "Venir en voiture",
-        state: 1
-    },
-    {
-        idTask: 6,
-        content: "Se faire un thé",
-        state: 1
-    },
+    // {
+    //     idTask: 1,
+    //     content: "Sortir le chien",
+    //     state: 0
+    // },
+    // {
+    //     idTask: 2,
+    //     content: "Rendre l'évaluation",
+    //     state: 0
+    // },
+    // {
+    //     idTask: 3,
+    //     content: "Manger à midi",
+    //     state: 0
+    // },
+    // {
+    //     idTask: 4,
+    //     content: "Se lever",
+    //     state: 1
+    // },
+    // {
+    //     idTask: 5,
+    //     content: "Venir en voiture",
+    //     state: 1
+    // },
+    // {
+    //     idTask: 6,
+    //     content: "Se faire un thé",
+    //     state: 1
+    // },
 ]
+// console.log("")
+console.log(todos);
+
+// sendToDosToLocalStorage(todos);
+
+
+let todosImport = [];
+todosImport = getToDosFromLocalStorage();
+// todosTest = [1,2,3]
+console.log(todosImport);
+
+
+
+
+
+/**
+ * This function is called at each change on a task (state, creation, delete, edit) 
+ * @param {Object} todos 
+ */
+function sendToDosToLocalStorage(todos) {
+    localStorage.setItem("tasks", JSON.stringify(todos));
+}
+
+function getToDosFromLocalStorage() {
+    return JSON.parse(localStorage.getItem("tasks"));
+}
+
+
+// get todos froms LocalStorage to display tasks
+todos = getToDosFromLocalStorage();
+
 // let lengthOfTodos = todos.length;
 
 
@@ -111,10 +143,7 @@ formAddTaskDOM.addEventListener("submit", function(e) {
     formDataAddTask.append("idTask", idTask);
     // lengthOfTodos++;
     formDataAddTask.append("state", 0);
-    // console.log(lengthOfTodos);
-    // console.log(formDataAddTask);
-    // console.log(todos);
-    // console.log(todos.length);
+    
 
     let formDataObj = {};
     formDataAddTask.forEach((value, key) => {
@@ -128,7 +157,14 @@ formAddTaskDOM.addEventListener("submit", function(e) {
     addSingleToDo(formDataObj);
 
     todos.push(formDataObj);
+    // console.log(todos);
+    // console.log(getToDosFromLocalStorage());
+    // console.log(todos);
     
+    // !!!!!!!!!!!!!!!!
+    // send array to local Storage
+    sendToDosToLocalStorage(todos);
+    // !!!!!!!!!!!!!!!!
     
 
 
@@ -154,6 +190,7 @@ formAddTaskDOM.addEventListener("submit", function(e) {
 function addToDos(typeOfTodoDOM, element) {
     const clone = templateToDo.content.cloneNode(true);
     clone.querySelector("#content").textContent = element.content;
+    clone.querySelector(".js-check").textContent = element.state ? "Passer à faire" : "Remettre à faire";
     typeOfTodoDOM.appendChild(clone);
 }
 
