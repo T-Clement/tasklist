@@ -26,11 +26,7 @@ form.addEventListener("submit", function(e) {
 const username = document.querySelector("#username");
 username.textContent = localStorage.getItem("username");
 
-
-
-
-// a alimenter en JS a chaque mise à jour du contenu de la page 
-// et les interactions
+// initialize todos array to empty
 let todos = [];
 
 // get todos froms LocalStorage to display tasks
@@ -40,7 +36,6 @@ todos = getToDosFromLocalStorage();
 // if no tasks in local storage, put a default task
 if(todos === null) {
     console.log("Il faut mettre des todos par défault");
-    //idTask Content State
     todos = [
         {
             idTask: Date.now(),
@@ -88,13 +83,11 @@ btnAddTaskDOM.addEventListener("click", function(e) {
 const formAddTaskDOM = document.querySelector("#form-add-task");
 formAddTaskDOM.addEventListener("submit", function(e) {
     e.preventDefault();
-    console.log(e.target);
     const formDataAddTask = new FormData(e.target);
 
     // use of Date to get a unique id
     let idTask = Date.now();
     formDataAddTask.append("idTask", idTask);
-    // lengthOfTodos++;
     formDataAddTask.append("state", 0);
     
     // convert formData in JS Object
@@ -106,9 +99,10 @@ formAddTaskDOM.addEventListener("submit", function(e) {
             formDataObj[key] = value;
         }
     });
-
+    // add todo to DOM
     addSingleToDo(formDataObj);
 
+    // add todo JS Object to array of todos
     todos.push(formDataObj);
     
     // send array to local Storage
@@ -192,7 +186,6 @@ function handleDelete(elementDOM, element ="") {
 }
 
 function handleCheck(elementDOM) {
-    // console.log(elementDOM.querySelector(".js-check"));
     elementDOM.querySelector(".js-check").addEventListener("click", function(e) {
         
         todos.forEach((todo, index) => {
