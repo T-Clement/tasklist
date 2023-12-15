@@ -21,7 +21,6 @@ form.addEventListener("submit", function(e) {
 
     // call to function to display the content the page without the form
     checkUser();
-    // checkTodos() ???
 });
 
 // replace user name in localStorage in DOM
@@ -42,7 +41,21 @@ let todos = [];
 // get todos froms LocalStorage to display tasks
 todos = getToDosFromLocalStorage();
 
-// let lengthOfTodos = todos.length;
+
+// if no tasks in local storage, put a default task
+if(todos === null) {
+    console.log("Il faut mettre des todos par défault");
+    //idTask Content State
+    todos = [
+        {
+            idTask: Date.now(),
+            content: "Ceci est une tache par défaut",
+            state: 0
+        }
+    ];  
+    sendToDosToLocalStorage(todos);
+}
+
 
 
 
@@ -53,7 +66,8 @@ const todosDoneDOM = document.querySelector("#list-done");
 const templateToDo = document.getElementById("template-todo");
 
 // map on each Todo with call to function who place todos in DOM
-if(todos.length != 0 || todos.length != null) {
+if(todos.length != 0) {
+    // if(todos == null) return;
     todos.map((element) => {
         if(element.state === 0) {
             addToDos(todosToDoDOM, element);
@@ -282,7 +296,7 @@ function checkUser () {
     } else {
         document.querySelector("#mask").style.display = "none";
         document.querySelector(".container").style.display = "block";
-
+        document.querySelector("#username").textContent = localStorage.getItem("username");
     };
 }
 
